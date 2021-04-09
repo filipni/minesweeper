@@ -70,8 +70,6 @@ namespace minesweeper
             }
 
             var revealedTiles = BfsReveal(tile);
-            revealedTiles.ForEach(x => _board.SetTile(x.Position, x));
-
             _tilesLeftToReveal -= revealedTiles.Count();
             if (_tilesLeftToReveal == 0)
             {
@@ -90,6 +88,7 @@ namespace minesweeper
             while (queue.Any())
             {
                 var revealedTile = queue.Dequeue() with {State = TileState.Revealed};
+                _board.SetTile(revealedTile.Position, revealedTile);
                 revealedTiles.Add(revealedTile);
 
                 if (revealedTile.AdjacentMines != 0)
