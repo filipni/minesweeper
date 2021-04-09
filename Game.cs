@@ -62,7 +62,7 @@ namespace minesweeper
                 State = GameState.Lost;
 
                 var explodedTile = tile with {State = TileState.Exploded};
-                _board.SetTile(explodedTile.Position, explodedTile);
+                _board.SetTile(explodedTile);
 
                 var revealedMines = RevealHiddenMines();
                 revealedMines.Add(explodedTile);
@@ -88,7 +88,7 @@ namespace minesweeper
             while (queue.Any())
             {
                 var revealedTile = queue.Dequeue() with {State = TileState.Revealed};
-                _board.SetTile(revealedTile.Position, revealedTile);
+                _board.SetTile(revealedTile);
                 revealedTiles.Add(revealedTile);
 
                 if (revealedTile.AdjacentMines != 0)
@@ -116,7 +116,7 @@ namespace minesweeper
                 .Select(tile => tile with {State = TileState.Revealed})
                 .ToList();
 
-            revealedMines.ForEach(tile => _board.SetTile(tile.Position, tile));
+            revealedMines.ForEach(tile => _board.SetTile(tile));
             return revealedMines;
         }
 

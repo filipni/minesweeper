@@ -58,7 +58,7 @@ namespace minesweeper
             var adjacentMines = GetAdjacentPositions(position).Intersect(mines).Count();
             var hasMine = mines.Contains(position);
             var tile = new Tile(){Position = position, HasMine = hasMine, AdjacentMines = adjacentMines};
-            SetTile(tile.Position, tile);
+            SetTile(tile);
         }
 
         public bool TryGetTile(Position position, out Tile tile)
@@ -72,8 +72,8 @@ namespace minesweeper
         private Tile GetTile(Position position)
             => _grid[position.Row, position.Column];
 
-        public void SetTile(Position position, Tile tile)
-            => _grid[position.Row, position.Column] = tile;
+        public void SetTile(Tile tile)
+            => _grid[tile.Position.Row, tile.Position.Column] = tile;
 
         public IEnumerable<Tile> GetAdjacentTiles(Tile tile)
             => GetAdjacentPositions(tile.Position).Select(position => GetTile(position));
