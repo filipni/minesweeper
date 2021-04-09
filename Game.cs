@@ -64,36 +64,40 @@ namespace minesweeper
                 var explodedTile = tile with {State = TileState.Exploded};
                 _board.SetTile(explodedTile.Position, explodedTile);
 
-                var revealedMines = RevealMines();
+                var revealedMines = RevealHiddenMines();
                 revealedMines.Add(explodedTile);
                 return revealedMines;
             }
 
+            var revealedTiles = BfsReveal(tile);
+            revealedTiles.ForEach(x => _board.SetTile(x.Position, x));
+
+            _tilesLeftToReveal -= revealedTiles.Count();
+            if (_tilesLeftToReveal == 0)
+            {
+                State = GameState.Won;
+            }
+            
+            return revealedTiles;
+        }
+
+        private List<Tile> BfsReveal(Tile startTile)
+        {
             var revealedTiles = new List<Tile>();
             var queue = new Queue<Tile>();
-            queue.Enqueue(tile);
+            queue.Enqueue(startTile);
 
             while (queue.Any())
             {
-                var currentTile = queue.Dequeue();
-                var revealedTile = currentTile with {State = TileState.Revealed};
-
+                var revealedTile = queue.Dequeue() with {State = TileState.Revealed};
                 revealedTiles.Add(revealedTile);
-                _board.SetTile(revealedTile.Position, revealedTile);
-                --_tilesLeftToReveal;
 
-                if (_tilesLeftToReveal == 0)
-                {
-                    State = GameState.Won;
-                    return revealedTiles;
-                }
-
-                if (currentTile.AdjacentMines != 0)
+                if (revealedTile.AdjacentMines != 0)
                 {
                     continue;
                 }
 
-                var adjacentTiles = _board.GetAdjacentTiles(currentTile);
+                var adjacentTiles = _board.GetAdjacentTiles(revealedTile);
                 foreach (var neighbour in adjacentTiles)
                 {
                     if (CanBeRevealed(neighbour) && !queue.Contains(neighbour))
@@ -106,15 +110,15 @@ namespace minesweeper
             return revealedTiles;
         }
 
-        private List<Tile> RevealMines()
+        private List<Tile> RevealHiddenMines()
         {
-            var updatedTiles = _board.Tiles
-                .Where(tile => tile.State != TileState.Revealed && tile.State != TileState.Exploded && tile.HasMine)
+            var revealedMines = _board.Tiles
+                .Where(tile => !tile.Cleared && tile.HasMine)
                 .Select(tile => tile with {State = TileState.Revealed})
                 .ToList();
 
-            updatedTiles.ForEach(tile => _board.SetTile(tile.Position, tile));
-            return updatedTiles;
+            revealedMines.ForEach(tile => _board.SetTile(tile.Position, tile));
+            return revealedMines;
         }
 
         private bool CanBeRevealed(Tile tile)
