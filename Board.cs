@@ -14,7 +14,6 @@ namespace minesweeper
         private readonly int _width;
         private readonly int _height;
 
-
         public Board(int width, int height, int numberOfMines, Position startingPosition)
         {
             _width = width;
@@ -25,7 +24,7 @@ namespace minesweeper
 
             InitializeTiles(startingPosition, numberOfMines);
 
-            Tiles = _positions.Select(position => { GetTile(position, out var tile); return tile; });
+            Tiles = _positions.Select(position => GetTile(position));
         }
 
         public IEnumerable<Position> GetPositionsInArea(Position areaStart, int width, int height)
@@ -62,19 +61,22 @@ namespace minesweeper
             SetTile(tile.Position, tile);
         }
 
-        public bool GetTile(Position position, out Tile tile)
+        public bool TryGetTile(Position position, out Tile tile)
         {
             tile = PositionOutOfBounds(position)
                 ? null
-                :_grid[position.Row, position.Column];
+                : GetTile(position);
             return tile != null;
         }
+
+        private Tile GetTile(Position position)
+            => _grid[position.Row, position.Column];
 
         public void SetTile(Position position, Tile tile)
             => _grid[position.Row, position.Column] = tile;
 
         public IEnumerable<Tile> GetAdjacentTiles(Tile tile)
-            => GetAdjacentPositions(tile.Position).Select(position => { GetTile(position, out var tile); return tile; });
+            => GetAdjacentPositions(tile.Position).Select(position => GetTile(position));
 
         private IEnumerable<Position> GetAdjacentPositions(Position position)
             => GetPositionsInArea(new Position(position.Row - 1, position.Column - 1), 3, 3)
