@@ -9,7 +9,7 @@ namespace minesweeper
         public GameState State { get; private set; } = GameState.Running;
 
         private Board _board;
-        private bool _isFirstReveal = true;
+        private bool _isFirstAction = true;
         private int _width;
         private int _height;
         private int _numberOfMines;
@@ -29,49 +29,54 @@ namespace minesweeper
             _tilesLeftToReveal = numberOfTiles - numberOfMines;
         }
 
-        public List<Tile> RevealTile(Position position)
+        public List<Tile> HandleInput(Action action, Position position)
         {
-            if (State != GameState.Running)
-            {
-                return new List<Tile>();
-            }
-
-            if (_isFirstReveal)
+            if (_isFirstAction)
             {
                 _board = new Board(_width, _height, _numberOfMines, position);
-                _isFirstReveal = false;
+                _isFirstAction = false;
             }
 
-            var tileFound = _board.TryGetTile(position, out var chosenTile);
-            if (!tileFound || !CanBeRevealed(chosenTile))
+            var tileFound = _board.TryGetTile(position, out var tile);
+            if (!tileFound || State != GameState.Running)
             {
                 return new List<Tile>();
             }
 
-            if (chosenTile.HasMine)
+            return action switch
+            {
+                Action.Reveal => RevealTile(tile),
+                _ => new List<Tile>()
+            };
+        }
+
+        private List<Tile> RevealTile(Tile tile)
+        {
+            if (!CanBeRevealed(tile))
+            {
+                return new List<Tile>();
+            }
+
+            if (tile.HasMine)
             {
                 State = GameState.Lost;
 
-                var explodedTile = chosenTile with {State = TileState.Exploded};
+                var explodedTile = tile with {State = TileState.Exploded};
                 _board.SetTile(explodedTile.Position, explodedTile);
 
-                var updatedTiles = _board.Tiles
-                    .Where(tile => tile.State != TileState.Revealed && tile.Position != explodedTile.Position && tile.HasMine)
-                    .Select(tile => tile with {State = TileState.Revealed})
-                    .ToList();
-
-                updatedTiles.ForEach(tile => _board.SetTile(tile.Position, tile));
-                return updatedTiles.Append(explodedTile).ToList();
+                var revealedMines = RevealMines();
+                revealedMines.Add(explodedTile);
+                return revealedMines;
             }
 
             var revealedTiles = new List<Tile>();
             var queue = new Queue<Tile>();
-            queue.Enqueue(chosenTile);
+            queue.Enqueue(tile);
 
             while (queue.Any())
             {
-                var tile = queue.Dequeue();
-                var revealedTile = tile with {State = TileState.Revealed};
+                var currentTile = queue.Dequeue();
+                var revealedTile = currentTile with {State = TileState.Revealed};
 
                 revealedTiles.Add(revealedTile);
                 _board.SetTile(revealedTile.Position, revealedTile);
@@ -83,12 +88,12 @@ namespace minesweeper
                     return revealedTiles;
                 }
 
-                if (tile.AdjacentMines != 0)
+                if (currentTile.AdjacentMines != 0)
                 {
                     continue;
                 }
 
-                var adjacentTiles = _board.GetAdjacentTiles(tile);
+                var adjacentTiles = _board.GetAdjacentTiles(currentTile);
                 foreach (var neighbour in adjacentTiles)
                 {
                     if (CanBeRevealed(neighbour) && !queue.Contains(neighbour))
@@ -99,6 +104,17 @@ namespace minesweeper
             }
             
             return revealedTiles;
+        }
+
+        private List<Tile> RevealMines()
+        {
+            var updatedTiles = _board.Tiles
+                .Where(tile => tile.State != TileState.Revealed && tile.State != TileState.Exploded && tile.HasMine)
+                .Select(tile => tile with {State = TileState.Revealed})
+                .ToList();
+
+            updatedTiles.ForEach(tile => _board.SetTile(tile.Position, tile));
+            return updatedTiles;
         }
 
         private bool CanBeRevealed(Tile tile)
