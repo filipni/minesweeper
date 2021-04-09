@@ -42,7 +42,7 @@ namespace minesweeper
                 _isFirstReveal = false;
             }
 
-            var tileFound = _board.GetTile(position, out var chosenTile);
+            var tileFound = _board.TryGetTile(position, out var chosenTile);
             if (!tileFound || !CanBeRevealed(chosenTile))
             {
                 return new List<Tile>();
