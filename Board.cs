@@ -87,45 +87,5 @@ namespace minesweeper
                 || position.Row > _height - 1
                 || position.Column < 0
                 || position.Column > _width - 1;
-
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-
-            for (int i = 0; i < _height; i++)
-            {
-               for (int j = 0; j < _width; j++)
-               {
-                  var symbol = GetTileSymbol(_grid[i, j]); 
-                  sb.Append(symbol);
-               } 
-               sb.Append(Environment.NewLine);
-            }
-
-            return sb.ToString();
-        }
-
-        private string GetTileSymbol(Tile tile)
-        {
-            if (tile.State == TileState.Exploded)
-            {
-                return "X";
-            }
-
-            if (tile.HasMine && tile.State == TileState.Revealed)
-            {
-                return "+";
-            }
-
-            if (tile.State == TileState.Revealed)
-            {
-                return tile.AdjacentMines != 0
-                    ? tile.AdjacentMines.ToString()
-                    : "-";
-            }
-
-            return "#";
-        }
-        
     }
 }
