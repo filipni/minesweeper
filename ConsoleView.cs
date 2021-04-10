@@ -122,7 +122,7 @@ namespace minesweeper
             while (!correctInput)
             {
                 Console.Write(query);
-                var input = System.Console.ReadLine();
+                var input = Console.ReadLine();
 
                 match = Regex.Match(input, inputFormat);
                 correctInput = match.Success;
