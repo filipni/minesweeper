@@ -7,13 +7,13 @@ namespace minesweeper
     class Game
     {
         public GameState State { get; private set; } = GameState.Running;
+        public int BoardWidth { get; }
+        public int BoardHeight { get; }
 
         private Board _board;
         private const int MinSide = 4;
         private const int MaxSide = 100;
         private bool _isFirstAction = true;
-        private int _width;
-        private int _height;
         private int _numberOfMines;
         private int _tilesLeftToReveal;
 
@@ -28,8 +28,8 @@ namespace minesweeper
                 numberOfMines = numberOfTiles - 1;
             }
 
-            _width = width;
-            _height = height;
+            BoardWidth = width;
+            BoardHeight = height;
             _numberOfMines = numberOfMines;
             _tilesLeftToReveal = numberOfTiles - numberOfMines;
         }
@@ -41,7 +41,7 @@ namespace minesweeper
         {
             if (_isFirstAction)
             {
-                _board = new Board(_width, _height, _numberOfMines, position);
+                _board = new Board(BoardWidth, BoardHeight, _numberOfMines, position);
                 _isFirstAction = false;
             }
 

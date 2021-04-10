@@ -13,7 +13,7 @@ namespace minesweeper
         public void CreateNewGame(int width, int height, int numberOfMines)
         {
             _game = new Game(width, height, numberOfMines);
-            _view.CreateGrid(width, height);
+            _view.CreateBoard(_game.BoardWidth, _game.BoardHeight);
             _view.State = _game.State;
         }
 

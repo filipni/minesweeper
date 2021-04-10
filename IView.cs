@@ -4,7 +4,7 @@ namespace minesweeper
     {
         GameState State { set; }
 
-        void CreateGrid(int width, int height);
+        void CreateBoard(int width, int height);
         void Show();
         void UpdateTile(Position position, TileImage image);
     }

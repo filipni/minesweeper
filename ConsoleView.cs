@@ -9,7 +9,9 @@ namespace minesweeper
     {
         public GameState State { get; set; }
 
-        private TileImage[,] _grid;
+        private int _boardWidth;
+        private int _boardHeight;
+        private TileImage[,] _board;
         private IPresenter _presenter;
         private Dictionary<TileImage, char> _symbolTable = new Dictionary<TileImage, char>
         {
@@ -32,11 +34,15 @@ namespace minesweeper
         public ConsoleView()
             => _presenter = new Presenter(this);
 
-        public void CreateGrid(int width, int height)
-            => _grid = new TileImage[height, width];
+        public void CreateBoard(int width, int height)
+        {
+            _boardWidth = width;
+            _boardHeight = height;
+            _board = new TileImage[height, width];
+        }
 
         public void UpdateTile(Position position, TileImage image)
-            => _grid[position.Row, position.Column] = image;
+            => _board[position.Row, position.Column] = image;
 
         public void Show()
         {
@@ -51,7 +57,7 @@ namespace minesweeper
         {
             StartGame();
 
-            if (_grid is null)
+            if (_board is null)
             {
                 Console.WriteLine("Something went wrong.");
                 return false;
@@ -85,7 +91,7 @@ namespace minesweeper
         private void StartGame()
         {
             Console.WriteLine("Welcome to Minesweeper!");
-            var inputs = GetInput("Enter game settings ({width} {height} {mines}): ", @"(\d+) (\d+) (\d+)");
+            var inputs = GetInput("Enter game settings ({width} {height} {mines}): ", @"^(\d{1,3}) (\d{1,3}) (\d{1,3})$");
 
             var width = int.Parse(inputs[0]);
             var height = int.Parse(inputs[1]);
@@ -96,13 +102,19 @@ namespace minesweeper
 
         private (Action, Position) GetAction()
         {
-            var inputs = GetInput("Choose action ({.|p|?|#} {row} {column}): ", @"(\.|p|\?|#) (\d+) (\d+)");
+            var actionString = string.Empty;
+            var row = int.MaxValue;
+            var column = int.MaxValue;
 
-            var actionString = inputs[0];
-            var row = int.Parse(inputs[1]);
-            var column = int.Parse(inputs[2]);
+            while (row >= _boardHeight || column >= _boardWidth)
+            {
+                var inputs = GetInput("Choose action ({.|p|?|#} {row} {column}): ", @"^(\.|p|\?|#) (\d{1,3}) (\d{1,3})$");
+                actionString = inputs[0];
+                row = int.Parse(inputs[1]);
+                column = int.Parse(inputs[2]);
+            }
+
             var position = new Position(row, column);
-
             var action = actionString switch
             {
                 "." => Action.Reveal,
@@ -141,11 +153,11 @@ namespace minesweeper
         {
             var sb = new StringBuilder();
 
-            for (int i = 0; i < _grid.GetLength(0); i++)
+            for (int i = 0; i < _boardHeight; i++)
             {
-                for (int j = 0; j < _grid.GetLength(1); j++)
+                for (int j = 0; j < _boardWidth; j++)
                 {
-                    var symbol = _symbolTable[_grid[i, j]]; 
+                    var symbol = _symbolTable[_board[i, j]]; 
                     sb.Append(symbol);
                 } 
                 sb.Append(Environment.NewLine);
