@@ -14,6 +14,11 @@ namespace minesweeper
             get => State == TileState.Revealed || State == TileState.Exploded;
         }
 
+        public bool Marked
+        {
+            get => State == TileState.Flagged || State == TileState.Questioned;
+        }
+
         public TileImage Image
         {
             get =>

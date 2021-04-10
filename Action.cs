@@ -4,6 +4,7 @@ namespace minesweeper
     {
         Reveal,
         Flag,
-        Question
+        Question,
+        Reset
     }
 }

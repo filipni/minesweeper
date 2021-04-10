@@ -96,7 +96,7 @@ namespace minesweeper
 
         private (Action, Position) GetAction()
         {
-            var inputs = GetInput("Choose action ({.|p|?} {row} {column}): ", @"(\.|p|\?) (\d+) (\d+)");
+            var inputs = GetInput("Choose action ({.|p|?|#} {row} {column}): ", @"(\.|p|\?|#) (\d+) (\d+)");
 
             var actionString = inputs[0];
             var row = int.Parse(inputs[1]);
@@ -107,7 +107,8 @@ namespace minesweeper
             {
                 "." => Action.Reveal,
                 "p" => Action.Flag,
-                "?" => Action.Question
+                "?" => Action.Question,
+                "#" => Action.Reset
             };
 
             return (action, position);

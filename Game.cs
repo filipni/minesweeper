@@ -56,6 +56,7 @@ namespace minesweeper
                 Action.Reveal => RevealTile(tile),
                 Action.Flag => FlagTile(tile),
                 Action.Question => QuestionTile(tile),
+                Action.Reset => ResetTile(tile),
                 _ => new List<Tile>()
             };
         }
@@ -66,16 +67,14 @@ namespace minesweeper
         private List<Tile> QuestionTile(Tile tile)
             => MarkTile(tile, TileState.Questioned);
 
+        private List<Tile> ResetTile(Tile tile)
+            => MarkTile(tile, TileState.Hidden);
+
         private List<Tile> MarkTile(Tile tile, TileState marking)
         {
             if (tile.Cleared)
             {
                 return new List<Tile>();
-            }
-            
-            if (tile.State == marking)
-            {
-                marking = TileState.Hidden;
             }
 
             var markedTile = tile with {State = marking};
@@ -85,7 +84,7 @@ namespace minesweeper
 
         private List<Tile> RevealTile(Tile tile)
         {
-            if (!CanBeRevealed(tile))
+            if (tile.Cleared)
             {
                 return new List<Tile>();
             }
@@ -132,7 +131,7 @@ namespace minesweeper
                 var adjacentTiles = _board.GetAdjacentTiles(revealedTile);
                 foreach (var neighbour in adjacentTiles)
                 {
-                    if (CanBeRevealed(neighbour) && !queue.Contains(neighbour))
+                    if (CanBeRevealedAutomatically(neighbour) && !queue.Contains(neighbour))
                     {
                         queue.Enqueue(neighbour);
                     }
@@ -153,10 +152,8 @@ namespace minesweeper
             return revealedMines;
         }
 
-        private bool CanBeRevealed(Tile tile)
-            => tile.State != TileState.Flagged
-                && tile.State != TileState.Questioned
-                && tile.State != TileState.Revealed;
+        private bool CanBeRevealedAutomatically(Tile tile)
+            => !tile.Cleared && !tile.Marked;
 
         public void PrintBoard()
             => Console.WriteLine(_board);
