@@ -19,8 +19,8 @@ namespace minesweeper
 
         public Game(int width, int height, int numberOfMines)
         {
-            width = ClipSide(width);
-            height = ClipSide(height);
+            width = Math.Clamp(width, MinSide, MaxSide);
+            height = Math.Clamp(height, MinSide, MaxSide);
 
             var numberOfTiles = width * height;
             if (numberOfMines >= numberOfTiles)
@@ -33,9 +33,6 @@ namespace minesweeper
             _numberOfMines = numberOfMines;
             _tilesLeftToReveal = numberOfTiles - numberOfMines;
         }
-
-        private int ClipSide(int side)
-            => Math.Min(MaxSide, Math.Max(MinSide, side));
 
         public List<Tile> HandleInput(Action action, Position position)
         {
