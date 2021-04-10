@@ -9,6 +9,8 @@ namespace minesweeper
         public GameState State { get; private set; } = GameState.Running;
 
         private Board _board;
+        private const int MinSide = 4;
+        private const int MaxSide = 100;
         private bool _isFirstAction = true;
         private int _width;
         private int _height;
@@ -17,10 +19,13 @@ namespace minesweeper
 
         public Game(int width, int height, int numberOfMines)
         {
+            width = ClipSide(width);
+            height = ClipSide(height);
+
             var numberOfTiles = width * height;
             if (numberOfMines >= numberOfTiles)
             {
-                throw new System.ArgumentException("The number of mines must be less than the number of tiles.", nameof(numberOfMines));
+                numberOfMines = numberOfTiles - 1;
             }
 
             _width = width;
@@ -28,6 +33,9 @@ namespace minesweeper
             _numberOfMines = numberOfMines;
             _tilesLeftToReveal = numberOfTiles - numberOfMines;
         }
+
+        private int ClipSide(int side)
+            => Math.Min(MaxSide, Math.Max(MinSide, side));
 
         public List<Tile> HandleInput(Action action, Position position)
         {
