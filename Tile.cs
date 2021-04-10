@@ -19,7 +19,10 @@ namespace minesweeper
             get =>
                 State switch
                 {
+                    TileState.Hidden => TileImage.Hidden,
                     TileState.Exploded => TileImage.Exploded,
+                    TileState.Flagged => TileImage.Flagged,
+                    TileState.Questioned => TileImage.Questioned,
                     TileState.Revealed when HasMine => TileImage.Mine,
                     TileState.Revealed when AdjacentMines != 0 => _adjacentMinesImages[AdjacentMines],
                     TileState.Revealed when AdjacentMines == 0 => TileImage.Cleared,

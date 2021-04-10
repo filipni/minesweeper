@@ -60,7 +60,7 @@ namespace minesweeper
             while (State == GameState.Running)
             {
                 PrintBoard();
-                (Action action, Position position) = GetRevealPosition();
+                (Action action, Position position) = GetAction();
                 _presenter.HandleInput(action, position);
             }
 
@@ -94,15 +94,23 @@ namespace minesweeper
             _presenter.CreateNewGame(width, height, numberOfMines);
         }
 
-        private (Action, Position) GetRevealPosition()
+        private (Action, Position) GetAction()
         {
-            var inputs = GetInput("Reveal position ({row} {column}): ", @"(\d+) (\d+)");
+            var inputs = GetInput("Choose action ({.|p|?} {row} {column}): ", @"(\.|p|\?) (\d+) (\d+)");
 
-            var row = int.Parse(inputs[0]);
-            var column = int.Parse(inputs[1]);
+            var actionString = inputs[0];
+            var row = int.Parse(inputs[1]);
+            var column = int.Parse(inputs[2]);
             var position = new Position(row, column);
 
-            return (Action.Reveal, position);
+            var action = actionString switch
+            {
+                "." => Action.Reveal,
+                "p" => Action.Flag,
+                "?" => Action.Question
+            };
+
+            return (action, position);
         }
 
         private List<string> GetInput(string query, string inputFormat)

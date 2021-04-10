@@ -54,8 +54,33 @@ namespace minesweeper
             return action switch
             {
                 Action.Reveal => RevealTile(tile),
+                Action.Flag => FlagTile(tile),
+                Action.Question => QuestionTile(tile),
                 _ => new List<Tile>()
             };
+        }
+
+        private List<Tile> FlagTile(Tile tile)
+            => MarkTile(tile, TileState.Flagged);
+
+        private List<Tile> QuestionTile(Tile tile)
+            => MarkTile(tile, TileState.Questioned);
+
+        private List<Tile> MarkTile(Tile tile, TileState marking)
+        {
+            if (tile.Cleared)
+            {
+                return new List<Tile>();
+            }
+            
+            if (tile.State == marking)
+            {
+                marking = TileState.Hidden;
+            }
+
+            var markedTile = tile with {State = marking};
+            _board.SetTile(markedTile);
+            return new List<Tile> {markedTile};
         }
 
         private List<Tile> RevealTile(Tile tile)
