@@ -154,8 +154,5 @@ namespace minesweeper
 
         private bool CanBeRevealedAutomatically(Tile tile)
             => !tile.Cleared && !tile.Marked;
-
-        public void PrintBoard()
-            => Console.WriteLine(_board);
     }
 }
