@@ -18,9 +18,9 @@ namespace minesweeper
         public Game(int width, int height, int numberOfMines)
         {
             var numberOfTiles = width * height;
-            if (numberOfMines > numberOfTiles)
+            if (numberOfMines >= numberOfTiles)
             {
-                throw new System.ArgumentException("Number of mines cannot exceed the number of tiles.", nameof(numberOfMines));
+                throw new System.ArgumentException("The number of mines must be less than the number of tiles.", nameof(numberOfMines));
             }
 
             _width = width;
