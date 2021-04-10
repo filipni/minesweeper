@@ -72,14 +72,10 @@ namespace minesweeper
 
             PrintBoard();
 
-            if (State == GameState.Won)
-            {
-                Console.WriteLine("Congratulations, you won!");
-            }
-            else
-            {
-                System.Console.WriteLine("Sorry, you lost.");
-            }
+            var resultMessage = State == GameState.Won
+                ? "Congratulations, you won!"
+                : "Sorry, you lost.";
+            Console.WriteLine(resultMessage);
 
             Console.Write("Try again? (y) ");
             var input = Console.ReadLine();
