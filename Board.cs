@@ -6,7 +6,10 @@ namespace minesweeper
 {
     class Board
     {
-        public IEnumerable<Tile> Tiles { get; }
+        public IEnumerable<Tile> Tiles
+        {
+            get => _positions.Select(position => GetTile(position));
+        }
 
         private IEnumerable<Position> _positions;
         private Tile[,] _grid;
@@ -18,12 +21,9 @@ namespace minesweeper
             _width = width;
             _height = height;
             _grid = new Tile[height, width];
-
-            _positions = GetPositionsInArea(new Position(0, 0), _width, _height);
+            _positions = GetPositionsInArea(new Position(0, 0), width, height);
 
             InitializeTiles(startingPosition, numberOfMines);
-
-            Tiles = _positions.Select(position => GetTile(position));
         }
 
         public IEnumerable<Position> GetPositionsInArea(Position areaStart, int width, int height)
