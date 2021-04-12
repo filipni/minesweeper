@@ -103,12 +103,12 @@ namespace minesweeper
             var row = int.MaxValue;
             var column = int.MaxValue;
 
-            while (row >= _boardHeight || column >= _boardWidth)
+            while (row < 0 || row >= _boardHeight || column < 0 || column >= _boardWidth)
             {
                 var inputs = GetInput("Choose action ({.|p|?|#} {row} {column}): ", @"^(\.|p|\?|#) (\d{1,3}) (\d{1,3})$");
                 actionString = inputs[0];
-                row = int.Parse(inputs[1]);
-                column = int.Parse(inputs[2]);
+                row = int.Parse(inputs[1]) - 1; // - 1 since grid starts indexing from 1
+                column = int.Parse(inputs[2]) - 1;
             }
 
             var position = new Position(row, column);
@@ -148,7 +148,7 @@ namespace minesweeper
 
         private void PrintBoard()
         {
-            var rowIndices = Enumerable.Range(0, _boardHeight).Select(x => x.ToString());
+            var rowIndices = Enumerable.Range(1, _boardHeight).Select(x => x.ToString());
             var maxIndexLength = rowIndices.Max(x => x.Length);
 
             var sb = new StringBuilder();
@@ -156,8 +156,9 @@ namespace minesweeper
 
             for (int i = 0; i < _boardHeight; i++)
             {
-                sb.Append(new string(' ', maxIndexLength - i.ToString().Length));
-                sb.Append(i);
+                var indexToShow = i + 1;
+                sb.Append(new string(' ', maxIndexLength - indexToShow.ToString().Length));
+                sb.Append(indexToShow);
                 sb.Append("|");
 
                 for (int j = 0; j < _boardWidth; j++)
@@ -167,7 +168,7 @@ namespace minesweeper
                 } 
 
                 sb.Append("|");
-                sb.Append(i);
+                sb.Append(indexToShow);
 
                 sb.Append(Environment.NewLine);
             }
@@ -178,7 +179,7 @@ namespace minesweeper
 
         private string CreateIndexHeader(int paddingLength, bool reverseOrder = false)
         {
-            var columnIndices = Enumerable.Range(0, _boardWidth).Select(x => x.ToString());
+            var columnIndices = Enumerable.Range(1, _boardWidth).Select(x => x.ToString());
             int numberOfHeaderRows = columnIndices.Max(x => x.Length);
 
             var headerRows = new List<string>();
