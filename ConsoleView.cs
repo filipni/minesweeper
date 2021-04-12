@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -147,19 +148,65 @@ namespace minesweeper
 
         private void PrintBoard()
         {
+            var rowIndices = Enumerable.Range(0, _boardHeight).Select(x => x.ToString());
+            var maxIndexLength = rowIndices.Max(x => x.Length);
+
             var sb = new StringBuilder();
+            sb.Append(CreateIndexHeader(maxIndexLength));
 
             for (int i = 0; i < _boardHeight; i++)
             {
+                sb.Append(new string(' ', maxIndexLength - i.ToString().Length));
+                sb.Append(i);
+                sb.Append("|");
+
                 for (int j = 0; j < _boardWidth; j++)
                 {
                     var symbol = _symbolTable[_board[i, j]]; 
                     sb.Append(symbol);
                 } 
+
+                sb.Append("|");
+                sb.Append(i);
+
                 sb.Append(Environment.NewLine);
             }
 
+            sb.Append(CreateIndexHeader(maxIndexLength, true));
             Console.WriteLine(sb.ToString());
+        }
+
+        private string CreateIndexHeader(int paddingLength, bool reverseOrder = false)
+        {
+            var columnIndices = Enumerable.Range(0, _boardWidth).Select(x => x.ToString());
+            int numberOfHeaderRows = columnIndices.Max(x => x.Length);
+
+            var headerRows = new List<string>();
+            var padding = new string(' ', paddingLength);
+
+            for (int i = numberOfHeaderRows; i > 0; i--)
+            {
+                var sb = new StringBuilder(padding);
+                sb.Append(' ');
+
+                columnIndices
+                    .Select(x => x.Length >= i ? x[x.Length - i] : ' ')
+                    .ToList()
+                    .ForEach(x => sb.Append(x));
+
+                sb.Append(Environment.NewLine);
+                headerRows.Add(sb.ToString());
+            }
+            
+            var border = new string('-', columnIndices.Count());
+            headerRows.Add($"{padding}+{border}+{Environment.NewLine}");
+
+            if (reverseOrder)
+            {
+                headerRows.Reverse();
+            }
+
+            return string.Concat(headerRows);
         }
     }
 }
