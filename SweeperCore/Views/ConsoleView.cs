@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using SweeperCore;
 
-namespace ConsoleVersion
+namespace SweeperCore.Views
 {
-    internal class ConsoleView : IView
+    public class ConsoleView : IView
     {
         public GameState State { get; set; }
 
