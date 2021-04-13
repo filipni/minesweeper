@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using SweeperCore;
 
-namespace minesweeper
+namespace ConsoleVersion
 {
-    class ConsoleView : IView
+    internal class ConsoleView : IView
     {
         public GameState State { get; set; }
 
         private int _boardWidth;
         private int _boardHeight;
         private TileImage[,] _board;
-        private IPresenter _presenter;
-        private Dictionary<TileImage, char> _symbolTable = new Dictionary<TileImage, char>
+        private readonly IPresenter _presenter;
+        private readonly Dictionary<TileImage, char> _symbolTable = new Dictionary<TileImage, char>
         {
             [TileImage.Hidden]      = '#',
             [TileImage.Cleared]     = '.',
@@ -67,8 +68,8 @@ namespace minesweeper
             while (State == GameState.Running)
             {
                 PrintBoard();
-                (Action action, Position position) = GetAction();
-                _presenter.HandleInput(action, position);
+                var (move, position) = GetAction();
+                _presenter.HandleInput(move, position);
             }
 
             PrintBoard();
@@ -97,33 +98,33 @@ namespace minesweeper
             _presenter.CreateNewGame(width, height, numberOfMines);
         }
 
-        private (Action, Position) GetAction()
+        private (Move, Position) GetAction()
         {
-            var actionString = string.Empty;
+            var moveString = string.Empty;
             var row = int.MaxValue;
             var column = int.MaxValue;
 
             while (row < 0 || row >= _boardHeight || column < 0 || column >= _boardWidth)
             {
                 var inputs = GetInput("Choose action ({.|p|?|#} {row} {column}): ", @"^(\.|p|\?|#) (\d{1,3}) (\d{1,3})$");
-                actionString = inputs[0];
+                moveString = inputs[0];
                 row = int.Parse(inputs[1]) - 1; // - 1 since grid starts indexing from 1
                 column = int.Parse(inputs[2]) - 1;
             }
 
             var position = new Position(row, column);
-            var action = actionString switch
+            var move = moveString switch
             {
-                "." => Action.Reveal,
-                "p" => Action.Flag,
-                "?" => Action.Question,
-                "#" => Action.Reset
+                "." => Move.Reveal,
+                "p" => Move.Flag,
+                "?" => Move.Question,
+                "#" => Move.Reset
             };
 
-            return (action, position);
+            return (move, position);
         }
 
-        private List<string> GetInput(string query, string inputFormat)
+        private static List<string> GetInput(string query, string inputFormat)
         {
             Match match = null;
             var correctInput = false;
@@ -138,7 +139,7 @@ namespace minesweeper
             }
 
             var inputs = new List<string>();
-            for (int i = 1; i < match.Groups.Count; i++)
+            for (var i = 1; i < match.Groups.Count; i++)
             {
                 inputs.Add(match.Groups[i].Value);
             }
@@ -154,14 +155,14 @@ namespace minesweeper
             var sb = new StringBuilder();
             sb.Append(CreateIndexHeader(maxIndexLength));
 
-            for (int i = 0; i < _boardHeight; i++)
+            for (var i = 0; i < _boardHeight; i++)
             {
                 var indexToShow = i + 1;
                 sb.Append(new string(' ', maxIndexLength - indexToShow.ToString().Length));
                 sb.Append(indexToShow);
                 sb.Append("|");
 
-                for (int j = 0; j < _boardWidth; j++)
+                for (var j = 0; j < _boardWidth; j++)
                 {
                     var symbol = _symbolTable[_board[i, j]]; 
                     sb.Append(symbol);
@@ -180,18 +181,18 @@ namespace minesweeper
         private string CreateIndexHeader(int paddingLength, bool reverseOrder = false)
         {
             var columnIndices = Enumerable.Range(1, _boardWidth).Select(x => x.ToString());
-            int numberOfHeaderRows = columnIndices.Max(x => x.Length);
+            var numberOfHeaderRows = columnIndices.Max(x => x.Length);
 
             var headerRows = new List<string>();
             var padding = new string(' ', paddingLength);
 
-            for (int i = numberOfHeaderRows; i > 0; i--)
+            for (var i = numberOfHeaderRows; i > 0; i--)
             {
                 var sb = new StringBuilder(padding);
                 sb.Append(' ');
 
                 columnIndices
-                    .Select(x => x.Length >= i ? x[x.Length - i] : ' ')
+                    .Select(x => x.Length >= i ? x[^i] : ' ')
                     .ToList()
                     .ForEach(x => sb.Append(x));
 

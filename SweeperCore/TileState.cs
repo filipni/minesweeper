@@ -1,6 +1,6 @@
-namespace minesweeper
+namespace SweeperCore
 {
-    enum TileState
+    internal enum TileState
     {
         Hidden,
         Revealed,

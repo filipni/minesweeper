@@ -1,6 +1,6 @@
-namespace minesweeper
+namespace SweeperCore
 {
-    enum GameState
+    public enum GameState
     {
         Running,
         Won,

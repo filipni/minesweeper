@@ -1,6 +1,6 @@
-namespace minesweeper
+namespace SweeperCore
 {
-    interface IView
+    public interface IView
     {
         GameState State { set; }
 

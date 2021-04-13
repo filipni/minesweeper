@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweeperCore", "SweeperCore\SweeperCore.csproj", "{94056738-8092-4657-81BF-5804BF70E075}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleVersion", "ConsoleVersion\ConsoleVersion.csproj", "{62DC43B0-AAC3-4CAA-93C8-7F8DD6C2071A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{94056738-8092-4657-81BF-5804BF70E075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94056738-8092-4657-81BF-5804BF70E075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94056738-8092-4657-81BF-5804BF70E075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94056738-8092-4657-81BF-5804BF70E075}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62DC43B0-AAC3-4CAA-93C8-7F8DD6C2071A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62DC43B0-AAC3-4CAA-93C8-7F8DD6C2071A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62DC43B0-AAC3-4CAA-93C8-7F8DD6C2071A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62DC43B0-AAC3-4CAA-93C8-7F8DD6C2071A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {24E02CEB-D99D-4FF8-9201-17F47311BD27}
+	EndGlobalSection
+EndGlobal

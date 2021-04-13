@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace minesweeper
+namespace SweeperCore
 {
     record Tile
     {

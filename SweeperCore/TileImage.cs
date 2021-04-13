@@ -1,6 +1,6 @@
-namespace minesweeper
+namespace SweeperCore
 {
-    enum TileImage
+    public enum TileImage
     {
         Hidden,
         Cleared,

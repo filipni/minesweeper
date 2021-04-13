@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace minesweeper
+namespace SweeperCore
 {
-    class Game
+    internal class Game
     {
         public GameState State { get; private set; } = GameState.Running;
         public int BoardWidth { get; }
@@ -14,7 +14,7 @@ namespace minesweeper
         private const int MinSide = 4;
         private const int MaxSide = 100;
         private bool _isFirstAction = true;
-        private int _numberOfMines;
+        private readonly int _numberOfMines;
         private int _tilesLeftToReveal;
 
         public Game(int width, int height, int numberOfMines)
@@ -34,7 +34,7 @@ namespace minesweeper
             _tilesLeftToReveal = numberOfTiles - numberOfMines;
         }
 
-        public List<Tile> HandleInput(Action action, Position position)
+        public List<Tile> HandleInput(Move move, Position position)
         {
             if (_isFirstAction)
             {
@@ -48,12 +48,12 @@ namespace minesweeper
                 return new List<Tile>();
             }
 
-            return action switch
+            return move switch
             {
-                Action.Reveal => RevealTile(tile),
-                Action.Flag => FlagTile(tile),
-                Action.Question => QuestionTile(tile),
-                Action.Reset => ResetTile(tile),
+                Move.Reveal => RevealTile(tile),
+                Move.Flag => FlagTile(tile),
+                Move.Question => QuestionTile(tile),
+                Move.Reset => ResetTile(tile),
                 _ => new List<Tile>()
             };
         }

@@ -1,6 +1,6 @@
-namespace minesweeper
+namespace SweeperCore
 {
-    enum Action
+    public enum Move
     {
         Reveal,
         Flag,

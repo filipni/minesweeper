@@ -2,17 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace minesweeper
+namespace SweeperCore
 {
-    class Board
+    internal class Board
     {
         public IEnumerable<Tile> Tiles
-        {
-            get => _positions.Select(position => GetTile(position));
-        }
+            => _positions.Select(position => GetTile(position));
 
-        private IEnumerable<Position> _positions;
-        private Tile[,] _grid;
+        private readonly IEnumerable<Position> _positions;
+        private readonly Tile[,] _grid;
         private readonly int _width;
         private readonly int _height;
 
