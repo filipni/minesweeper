@@ -1,6 +1,6 @@
 namespace SweeperCore
 {
-    public class Presenter : IPresenter
+    public class Presenter
     {
         private readonly IView _view;
         private Game _game;

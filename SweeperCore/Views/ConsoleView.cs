@@ -13,7 +13,7 @@ namespace SweeperCore.Views
         private int _boardWidth;
         private int _boardHeight;
         private TileImage[,] _board;
-        private readonly IPresenter _presenter;
+        private readonly Presenter _presenter;
         private readonly Dictionary<TileImage, char> _symbolTable = new Dictionary<TileImage, char>
         {
             [TileImage.Hidden]      = '#',
