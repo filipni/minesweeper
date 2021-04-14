@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GuiVersion"
         xmlns:converters="clr-namespace:GuiVersion.Converters"
         mc:Ignorable="d"
-        Title="Minesweeper" Width="500" Height="500" WindowStyle="ToolWindow" Background="SlateGray" ResizeMode="NoResize">
+        Title="Minesweeper" Width="500" Height="500" WindowStyle="ToolWindow" Background="#FF33393B" ResizeMode="NoResize">
 
     <Window.Resources>
         <converters:FilePathToImageSourceConverter x:Key="FilePathToImageSourceConverter" />
