@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GuiVersion"
         xmlns:converters="clr-namespace:GuiVersion.Converters"
         mc:Ignorable="d"
-        Title="Minesweeper" Width="500" Height="500" WindowStyle="ToolWindow" Background="#FF33393B" ResizeMode="NoResize">
+        Title="Minesweeper" Width="650" Height="500" WindowStyle="ToolWindow" Background="#FF33393B" ResizeMode="NoResize">
 
     <Window.Resources>
         <converters:FilePathToImageSourceConverter x:Key="FilePathToImageSourceConverter" />
@@ -14,7 +14,13 @@
     </Window.Resources>
 
     <Grid>
-        <ItemsControl ItemsSource="{Binding Tiles}">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="500"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <ItemsControl ItemsSource="{Binding Tiles}" Grid.Column="0">
 
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -42,5 +48,21 @@
             </ItemsControl.ItemTemplate>
 
         </ItemsControl>
+
+        <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="25,0" >
+            <Button Content="New game"
+                    BorderBrush="Black"
+                    Padding="0,10"
+                    Background="#FF272A2C"
+                    Foreground="#FFEEEEED">
+
+                <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="2"/>
+                        </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+
     </Grid>
 </Window>
