@@ -37,7 +37,7 @@ namespace GuiVersion.ViewModels
         public ViewModel()
         {
             _presenter = new Presenter(this);
-            _presenter.CreateNewGame(10, 10, 25);
+            _presenter.CreateNewGame(10, 10, 10);
         }
 
         public void CreateBoard(int width, int height)

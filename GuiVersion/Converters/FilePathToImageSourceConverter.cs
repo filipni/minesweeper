@@ -2,24 +2,19 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
-using SweeperCore;
 
 namespace GuiVersion.Converters
 {
-    [ValueConversion(typeof(TileImage), typeof(SolidColorBrush))]
-    class TileImageToBackgroundColorConverter : IValueConverter
+    [ValueConversion(typeof(string), typeof(ImageSource))]
+    class FilePathToImageSourceConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is TileImage image)
+            if (value is string path)
             {
-                return image switch
-                {
-                    TileImage.Hidden => new SolidColorBrush(Colors.LightBlue),
-                    TileImage.Exploded => new SolidColorBrush(Colors.OrangeRed),
-                    _ => new SolidColorBrush(Colors.White)
-
-                };
+                var converter = new ImageSourceConverter();
+                var imageSource = converter.ConvertFromString(path) as ImageSource;
+                return imageSource;
             }
 
             return null;
