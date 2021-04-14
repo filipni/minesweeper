@@ -54,7 +54,7 @@
                     BorderBrush="Black"
                     Padding="0,10"
                     Background="#FF272A2C"
-                    Foreground="#FFEEEEED">
+                    Foreground="White">
 
                 <Button.Resources>
                         <Style TargetType="Border">
