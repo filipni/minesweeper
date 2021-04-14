@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using SweeperCore;
 
-namespace SweeperCore.Views
+namespace ConsoleVersion
 {
     public class ConsoleView : IView
     {
@@ -60,7 +61,7 @@ namespace SweeperCore.Views
 
             if (_board is null)
             {
-                Console.WriteLine("Something went wrong.");
+                System.Console.WriteLine("Something went wrong.");
                 return false;
             }
 
@@ -76,18 +77,18 @@ namespace SweeperCore.Views
             var resultMessage = State == GameState.Won
                 ? "Congratulations, you won!"
                 : "Sorry, you lost.";
-            Console.WriteLine(resultMessage);
+            System.Console.WriteLine(resultMessage);
 
-            Console.Write("Try again? (y) ");
-            var input = Console.ReadLine();
-            Console.WriteLine();
+            System.Console.Write("Try again? (y) ");
+            var input = System.Console.ReadLine();
+            System.Console.WriteLine();
 
             return input == "y";
         }
 
         private void StartGame()
         {
-            Console.WriteLine("Welcome to Minesweeper!");
+            System.Console.WriteLine("Welcome to Minesweeper!");
             var inputs = GetInput("Enter game settings ({width} {height} {mines}): ", @"^(\d{1,3}) (\d{1,3}) (\d{1,3})$");
 
             var width = int.Parse(inputs[0]);
@@ -130,8 +131,8 @@ namespace SweeperCore.Views
 
             while (!correctInput)
             {
-                Console.Write(query);
-                var input = Console.ReadLine();
+                System.Console.Write(query);
+                var input = System.Console.ReadLine();
 
                 match = Regex.Match(input, inputFormat);
                 correctInput = match.Success;
@@ -174,7 +175,7 @@ namespace SweeperCore.Views
             }
 
             sb.Append(CreateIndexHeader(maxIndexLength, true));
-            Console.WriteLine(sb.ToString());
+            System.Console.WriteLine(sb.ToString());
         }
 
         private string CreateIndexHeader(int paddingLength, bool reverseOrder = false)

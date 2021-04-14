@@ -1,4 +1,6 @@
-﻿namespace GuiVersion
+﻿using GuiVersion.ViewModels;
+
+namespace GuiVersion
 {
     public partial class MainWindow
     {

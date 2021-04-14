@@ -1,6 +1,4 @@
-﻿using SweeperCore.Views;
-
-namespace ConsoleVersion
+﻿namespace ConsoleVersion
 {
     internal class Program
     {
