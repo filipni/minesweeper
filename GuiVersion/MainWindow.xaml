@@ -24,14 +24,14 @@
 
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Rows="{Binding Height}" Columns="{Binding Width}"/>
+                    <UniformGrid Margin="10,10,0,10" Rows="{Binding Height}" Columns="{Binding Width}"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button Width="45"
-                            Height="43"
+                            Height="42"
                             BorderThickness="1"
                             Background="{Binding Image, Converter={StaticResource TileImageToBackgroundColorConverter}}" 
                             Command="{Binding TileClickedCommand}"
@@ -40,7 +40,7 @@
 
                         <Button.Resources>
                             <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="5"/>
+                                <Setter Property="CornerRadius" Value="2"/>
                             </Style>
                         </Button.Resources>
                     </Button>
