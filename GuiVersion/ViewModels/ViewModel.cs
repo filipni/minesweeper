@@ -48,7 +48,7 @@ namespace GuiVersion.ViewModels
             Tiles.Clear();
             for (var i = 0; i < Height; i++)
             {
-                for (int j = 0; j < Width; j++)
+                for (var j = 0; j < Width; j++)
                 {
                     Tiles.Add(new TileViewModel(TileImage.Hidden, new Position(i, j), this));
                 }
