@@ -11,7 +11,7 @@
     <Window.Resources>
         <converters:FilePathToImageSourceConverter x:Key="FilePathToImageSourceConverter" />
         <converters:TileImageToBackgroundColorConverter x:Key="TileImageToBackgroundColorConverter" />
-        <converters:BooleanToVisibleOrHiddenConverter x:Key="BooleanToVisibleOrHiddenConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
 
     <Grid>
@@ -53,26 +53,30 @@
 
         </ItemsControl>
 
-        <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="25,0">
+        <Grid Grid.Column="1">
 
-            <Image Source="Images/cup.png" Visibility="{Binding GameIsWon, Converter={StaticResource BooleanToVisibleOrHiddenConverter}}"/>
+            <StackPanel VerticalAlignment="Top" Margin="0,25,0,0">
+                <Image Source="Images/cup.png" Visibility="{Binding GameIsWon, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </StackPanel>
 
-            <Button Content="New game"
-                    BorderBrush="Black"
-                    Margin="0,25"
-                    Padding="0,10"
-                    Background="#FF272A2C"
-                    Foreground="White"
-                    Command="{Binding NewGameCommand}">
+            <StackPanel VerticalAlignment="Bottom" Margin="0,0,0,25">
+                <Button Content="New game"
+                        BorderBrush="Black"
+                        Padding="0,10"
+                        Margin="25,0"
+                        Background="#FF272A2C"
+                        Foreground="White"
+                        Command="{Binding NewGameCommand}">
 
-                <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="2"/>
-                        </Style>
-                </Button.Resources>
-            </Button>
+                    <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="2"/>
+                            </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
 
-        </StackPanel>
+        </Grid>
 
     </Grid>
 </Window>
