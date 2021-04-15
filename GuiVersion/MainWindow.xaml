@@ -47,6 +47,10 @@
                                 <Setter Property="CornerRadius" Value="2"/>
                             </Style>
                         </Button.Resources>
+
+                        <Button.InputBindings>
+                            <MouseBinding Gesture="RightClick" Command="{Binding TileRightClickedCommand}" CommandParameter="{Binding}" />
+                        </Button.InputBindings>
                     </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

@@ -10,6 +10,7 @@ namespace GuiVersion.ViewModels
     {
         public Position Position { get; }
         public TileClickedCommand TileClickedCommand { get; }
+        public TileRightClickedCommand TileRightClickedCommand { get; }
 
         public string ImagePath => $"../../../{_symbolTable[_image]}";
 
@@ -46,7 +47,7 @@ namespace GuiVersion.ViewModels
 
 
         public TileViewModel(TileImage image, Position position, ViewModel vm)
-            => (Image, Position, TileClickedCommand) = (image, position, new TileClickedCommand(vm));
+            => (Image, Position, TileClickedCommand, TileRightClickedCommand) = (image, position, new TileClickedCommand(vm), new TileRightClickedCommand(vm, this));
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

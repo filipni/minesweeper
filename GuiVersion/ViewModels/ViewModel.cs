@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
 using GuiVersion.Commands;
 using SweeperCore;
 
@@ -73,6 +74,22 @@ namespace GuiVersion.ViewModels
 
         public void HandleTileClicked(Position position)
             => _presenter.HandleInput(Move.Reveal, position);
+
+        internal void HandleTileRightClicked(Position position, TileImage image)
+        {
+            switch (image)
+            {
+                case TileImage.Hidden:
+                    _presenter.HandleInput(Move.Flag, position);
+                    break;
+                case TileImage.Flagged:
+                    _presenter.HandleInput(Move.Question, position);
+                    break;
+                case TileImage.Questioned:
+                    _presenter.HandleInput(Move.Reset, position);
+                    break;
+            }
+        }
 
         public void UpdateTile(Position position, TileImage image)
             => Tiles[position.Row * Width + position.Column].Image = image;
