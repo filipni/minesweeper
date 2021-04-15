@@ -10,7 +10,19 @@ namespace GuiVersion.ViewModels
     {
         public ObservableCollection<TileViewModel> Tiles { get; } = new ObservableCollection<TileViewModel>();
         public NewGameCommand NewGameCommand { get; }
-        public GameState State { get; set; }
+
+        private GameState _state;
+        public GameState State
+        {
+            get => _state;
+            set
+            {
+                _state = value;
+                OnPropertyChanged(nameof(GameIsRunning));
+            }
+        }
+
+        public bool GameIsRunning => _state == GameState.Running;
 
         private int _width;
         public int Width
