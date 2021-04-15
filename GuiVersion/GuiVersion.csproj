@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\cup.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\cup.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SweeperCore\SweeperCore.csproj" />
   </ItemGroup>
 

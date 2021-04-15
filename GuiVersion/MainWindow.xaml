@@ -11,6 +11,7 @@
     <Window.Resources>
         <converters:FilePathToImageSourceConverter x:Key="FilePathToImageSourceConverter" />
         <converters:TileImageToBackgroundColorConverter x:Key="TileImageToBackgroundColorConverter" />
+        <converters:BooleanToVisibleOrHiddenConverter x:Key="BooleanToVisibleOrHiddenConverter" />
     </Window.Resources>
 
     <Grid>
@@ -52,9 +53,13 @@
 
         </ItemsControl>
 
-        <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="25,0" >
+        <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="25,0">
+
+            <Image Source="Images/cup.png" Visibility="{Binding GameIsWon, Converter={StaticResource BooleanToVisibleOrHiddenConverter}}"/>
+
             <Button Content="New game"
                     BorderBrush="Black"
+                    Margin="0,25"
                     Padding="0,10"
                     Background="#FF272A2C"
                     Foreground="White"
@@ -66,6 +71,7 @@
                         </Style>
                 </Button.Resources>
             </Button>
+
         </StackPanel>
 
     </Grid>

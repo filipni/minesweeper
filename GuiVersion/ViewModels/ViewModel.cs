@@ -19,10 +19,12 @@ namespace GuiVersion.ViewModels
             {
                 _state = value;
                 OnPropertyChanged(nameof(GameIsRunning));
+                OnPropertyChanged(nameof(GameIsWon));
             }
         }
 
         public bool GameIsRunning => _state == GameState.Running;
+        public bool GameIsWon => _state == GameState.Won;
 
         private int _width;
         public int Width
