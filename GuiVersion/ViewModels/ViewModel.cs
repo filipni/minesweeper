@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using GuiVersion.Commands;
 using SweeperCore;
 
 namespace GuiVersion.ViewModels
@@ -8,6 +9,7 @@ namespace GuiVersion.ViewModels
     public class ViewModel : IView, INotifyPropertyChanged
     {
         public ObservableCollection<TileViewModel> Tiles { get; } = new ObservableCollection<TileViewModel>();
+        public NewGameCommand NewGameCommand { get; }
         public GameState State { get; set; }
 
         private int _width;
@@ -38,10 +40,13 @@ namespace GuiVersion.ViewModels
         {
             _presenter = new Presenter(this);
             _presenter.CreateNewGame(10, 10, 20);
+            NewGameCommand = new NewGameCommand(this);
         }
 
         public void CreateBoard(int width, int height)
         {
+            Tiles.Clear();
+
             Width = width;
             Height = height;
 
@@ -53,6 +58,8 @@ namespace GuiVersion.ViewModels
                 Tiles.Add(new TileViewModel(TileImage.Hidden, new Position(row, column), this));
             }
         }
+
+        public void NewGameClicked() => _presenter.CreateNewGame(10, 10, 20);
 
         public void HandleTileClicked(Position position)
             => _presenter.HandleInput(Move.Reveal, position);

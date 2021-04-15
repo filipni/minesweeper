@@ -54,7 +54,8 @@
                     BorderBrush="Black"
                     Padding="0,10"
                     Background="#FF272A2C"
-                    Foreground="White">
+                    Foreground="White"
+                    Command="{Binding NewGameCommand}">
 
                 <Button.Resources>
                         <Style TargetType="Border">
