@@ -3,9 +3,10 @@ namespace SweeperCore
     public interface IView
     {
         GameState State { set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
-        void CreateBoard(int width, int height);
-        void Show();
+        void ResetBoard();
         void UpdateTile(Position position, TileImage image);
     }
 }

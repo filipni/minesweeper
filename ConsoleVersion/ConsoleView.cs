@@ -10,9 +10,9 @@ namespace ConsoleVersion
     public class ConsoleView : IView
     {
         public GameState State { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
-        private int _boardWidth;
-        private int _boardHeight;
         private TileImage[,] _board;
         private readonly Presenter _presenter;
         private readonly Dictionary<TileImage, char> _symbolTable = new Dictionary<TileImage, char>
@@ -33,15 +33,9 @@ namespace ConsoleVersion
             [TileImage.Eight]       = '8'
         };
 
-        public ConsoleView()
-            => _presenter = new Presenter(this);
+        public ConsoleView() => _presenter = new Presenter(this);
 
-        public void CreateBoard(int width, int height)
-        {
-            _boardWidth = width;
-            _boardHeight = height;
-            _board = new TileImage[height, width];
-        }
+        public void ResetBoard() => _board = new TileImage[Height, Width];
 
         public void UpdateTile(Position position, TileImage image)
             => _board[position.Row, position.Column] = image;
@@ -104,7 +98,7 @@ namespace ConsoleVersion
             var row = int.MaxValue;
             var column = int.MaxValue;
 
-            while (row < 0 || row >= _boardHeight || column < 0 || column >= _boardWidth)
+            while (row < 0 || row >= Height || column < 0 || column >= Width)
             {
                 var inputs = GetInput("Choose action ({.|p|?|#} {row} {column}): ", @"^(\.|p|\?|#) (\d{1,3}) (\d{1,3})$");
                 moveString = inputs[0];
@@ -149,20 +143,20 @@ namespace ConsoleVersion
 
         private void PrintBoard()
         {
-            var rowIndices = Enumerable.Range(1, _boardHeight).Select(x => x.ToString());
+            var rowIndices = Enumerable.Range(1, Height).Select(x => x.ToString());
             var maxIndexLength = rowIndices.Max(x => x.Length);
 
             var sb = new StringBuilder();
             sb.Append(CreateIndexHeader(maxIndexLength));
 
-            for (var i = 0; i < _boardHeight; i++)
+            for (var i = 0; i < Height; i++)
             {
                 var indexToShow = i + 1;
                 sb.Append(new string(' ', maxIndexLength - indexToShow.ToString().Length));
                 sb.Append(indexToShow);
                 sb.Append("|");
 
-                for (var j = 0; j < _boardWidth; j++)
+                for (var j = 0; j < Width; j++)
                 {
                     var symbol = _symbolTable[_board[i, j]]; 
                     sb.Append(symbol);
@@ -180,7 +174,7 @@ namespace ConsoleVersion
 
         private string CreateIndexHeader(int paddingLength, bool reverseOrder = false)
         {
-            var columnIndices = Enumerable.Range(1, _boardWidth).Select(x => x.ToString());
+            var columnIndices = Enumerable.Range(1, Width).Select(x => x.ToString());
             var numberOfHeaderRows = columnIndices.Max(x => x.Length);
 
             var headerRows = new List<string>();

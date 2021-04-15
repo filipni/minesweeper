@@ -16,7 +16,7 @@ namespace GuiVersion.ViewModels
         public int Width
         {
             get => _width;
-            private set
+            set
             {
                 _width = value;
                 OnPropertyChanged(nameof(Width));
@@ -27,7 +27,7 @@ namespace GuiVersion.ViewModels
         public int Height
         {
             get => _height;
-            private set
+            set
             {
                 _height = value;
                 OnPropertyChanged(nameof(Height));
@@ -43,19 +43,15 @@ namespace GuiVersion.ViewModels
             NewGameCommand = new NewGameCommand(this);
         }
 
-        public void CreateBoard(int width, int height)
+        public void ResetBoard()
         {
             Tiles.Clear();
-
-            Width = width;
-            Height = height;
-
-            var numberOfTiles = width * height;
-            for (var i = 0; i < numberOfTiles; i++)
+            for (var i = 0; i < Height; i++)
             {
-                var row = i / width;
-                var column = i % width;
-                Tiles.Add(new TileViewModel(TileImage.Hidden, new Position(row, column), this));
+                for (int j = 0; j < Width; j++)
+                {
+                    Tiles.Add(new TileViewModel(TileImage.Hidden, new Position(i, j), this));
+                }
             }
         }
 
@@ -63,8 +59,6 @@ namespace GuiVersion.ViewModels
 
         public void HandleTileClicked(Position position)
             => _presenter.HandleInput(Move.Reveal, position);
-
-        public void Show() => throw new System.NotImplementedException();
 
         public void UpdateTile(Position position, TileImage image)
             => Tiles[position.Row * Width + position.Column].Image = image;

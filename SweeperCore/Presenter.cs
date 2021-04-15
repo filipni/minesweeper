@@ -11,7 +11,9 @@ namespace SweeperCore
         public void CreateNewGame(int width, int height, int numberOfMines)
         {
             _game = new Game(width, height, numberOfMines);
-            _view.CreateBoard(_game.BoardWidth, _game.BoardHeight);
+            _view.Width = _game.BoardWidth;
+            _view.Height = _game.BoardHeight;
+            _view.ResetBoard();
             _view.State = _game.State;
         }
 
