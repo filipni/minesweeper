@@ -53,7 +53,7 @@ namespace GuiVersion.ViewModels
         public ViewModel()
         {
             _presenter = new Presenter(this);
-            _presenter.CreateNewGame(10, 10, 1);
+            _presenter.CreateNewGame(10, 10, 20);
             NewGameCommand = new NewGameCommand(this);
         }
 
