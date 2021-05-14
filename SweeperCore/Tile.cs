@@ -35,7 +35,7 @@ namespace SweeperCore
                 };
         }
 
-        private Dictionary<int, TileImage> _adjacentMinesImages = new Dictionary<int, TileImage>
+        private static readonly Dictionary<int, TileImage> _adjacentMinesImages = new Dictionary<int, TileImage>
         {
             [1] = TileImage.One,
             [2] = TileImage.Two,
