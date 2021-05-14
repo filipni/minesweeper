@@ -60,9 +60,7 @@ namespace SweeperCore
 
         public bool TryGetTile(Position position, out Tile tile)
         {
-            tile = PositionOutOfBounds(position)
-                ? null
-                : GetTile(position);
+            tile = PositionOutOfBounds(position) ? null : GetTile(position);
             return tile != null;
         }
 
