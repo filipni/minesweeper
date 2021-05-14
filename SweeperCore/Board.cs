@@ -68,7 +68,12 @@ namespace SweeperCore
             => _grid[position.Row, position.Column];
 
         public void SetTile(Tile tile)
-            => _grid[tile.Position.Row, tile.Position.Column] = tile;
+        {
+            if (!PositionOutOfBounds(tile.Position))
+            {
+                _grid[tile.Position.Row, tile.Position.Column] = tile;
+            }
+        }
 
         public IEnumerable<Tile> GetAdjacentTiles(Tile tile)
             => GetAdjacentPositions(tile.Position).Select(position => GetTile(position));
