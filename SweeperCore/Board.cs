@@ -54,7 +54,7 @@ namespace SweeperCore
         {
             var adjacentMines = GetAdjacentPositions(position).Intersect(mines).Count();
             var hasMine = mines.Contains(position);
-            var tile = new Tile{Position = position, HasMine = hasMine, AdjacentMines = adjacentMines};
+            var tile = new Tile(position, hasMine, adjacentMines);
             SetTile(tile);
         }
 
